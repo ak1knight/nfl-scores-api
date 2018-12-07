@@ -76,7 +76,7 @@ Resources:
   Team:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: hello.handler
+      Handler: team.handler
       Runtime: python3.6
       Role:
         Fn::GetAtt:
