@@ -1,10 +1,17 @@
 from bs4 import BeautifulSoup
 import urllib.request
 import json
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def get_team_data_for_id(team_id):
     data = {}
+    logger.info('In get_team_data_for_id')
+
     with urllib.request.urlopen('https://www.pro-football-reference.com/teams/' + str(team_id) + '/2018/gamelog/') as response:
+        logger.info('Request successful')
         soup = BeautifulSoup(response.read().decode('utf-8'), 'html.parser')
 
         title = str(soup.title.text)
@@ -25,6 +32,7 @@ def get_team_data_for_id(team_id):
         return data
 
 def handler(event, context):
+    logger.info('Request recieved for: ' + event['pathParameters']['team_id'])
     data = get_team_data_for_id(event['pathParameters']['team_id'])
     return {
         'statusCode': 200,
