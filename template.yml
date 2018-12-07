@@ -73,3 +73,18 @@ Resources:
           Properties:
             Path: /hello/{name}
             Method: get
+  Team:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: hello.handler
+      Runtime: python3.6
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /team/{team_id}
+            Method: get
