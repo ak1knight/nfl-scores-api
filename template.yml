@@ -58,3 +58,18 @@ Resources:
       ManagedPolicyArns:
         -  arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       PermissionsBoundary: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/CodeStar_${ProjectId}_PermissionsBoundary'
+
+Hello:
+  Type: AWS::Serverless::Function
+  Properties:
+    Handler: hello.handler
+    Runtime: python3.6
+    Role:
+      Fn::ImportValue:
+        !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+    Events:
+      GetEvent:
+        Type: Api
+        Properties:
+          Path: /hello/{name}
+          Method: get
